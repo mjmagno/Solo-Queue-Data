@@ -1,0 +1,11 @@
+1. Pull solo queue statistics from the Riot API 
+2. Insert into a spreadsheet
+
+How are we managning multiple accounts?
+What data do we want to pull from the Riot API?
+Google sheets or Excel?
+Automatic or running a script
+
+
+
+
