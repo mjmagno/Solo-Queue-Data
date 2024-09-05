@@ -1,8 +1,10 @@
-from getPUUID import getPUUIDs
-from getMatchData import getMatchId
+from makeRequests import *
 
 puuids = getPUUIDs()
 
 for puuid in puuids:
     print(puuid)
-    print(getMatchId(puuid))
+    match_id = getMatchId(puuid)
+    print(match_id)
+    player_data = getPlayerMatchData(puuid,match_id)
+    print(player_data)
