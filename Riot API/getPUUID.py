@@ -19,10 +19,10 @@ def getPUUIDs():
     
     for id in ids:
         api_url = base_url + id + "?api_key=" + api_key
-        print(api_url)
+      
         
         player_data = request(api_url)
-        print(player_data)
+       
 
         puuids.append(player_data["puuid"])
         

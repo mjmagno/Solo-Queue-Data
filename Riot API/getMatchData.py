@@ -4,8 +4,7 @@ from config import getApiKey
 def getMatchId(puuid):
     api_key = getApiKey()
     base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/"
-    request_url = base_url + puuid + "/ids?start=0&count=1&" + "?api_key=" + api_key
-    print(request_url)
+    request_url = base_url + puuid + "/ids?start=0&count=1&" + "api_key=" + api_key
     match_id = request(request_url)
-    print(match_id)
+    return match_id
     
