@@ -40,13 +40,28 @@ def getPUUIDs():
         
     return puuids
 
-
+# Return most recent match
 def getMatchID(puuid):
     api_key = getApiKey()
     base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/"
     request_url = base_url + puuid + "/ids?start=0&count=1&" + "api_key=" + api_key
     match_id = request(request_url)
     return match_id[0]
+
+
+def getMatchIDs(puuid, num_matches):
+    api_key = getApiKey()
+    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/"
+    request_url = base_url + puuid + "/ids?start=0&count=" + str(num_matches) + "&" + "api_key=" + api_key
+    match_ids = request(request_url)
+    return match_ids
+
+def getMatchData(matchid):
+    api_key = getApiKey()
+    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/"
+    request_url = base_url + matchid + "?api_key=" + api_key
+    match_data = request(request_url)
+    return match_data
 
 def getPlayerMatchData(puuid, matchid):
     api_key = getApiKey()
@@ -57,5 +72,11 @@ def getPlayerMatchData(puuid, matchid):
     part_index = match_data["metadata"]["participants"].index(puuid)
     part_data =  match_data["info"]["participants"][part_index]
     return part_data
-    
+
+def getMatchTimeline(matchid):
+    api_key = getApiKey()
+    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/"
+    request_url = base_url + matchid + "/timeline?api_key=" + api_key
+    match_data = request(request_url)
+    return match_data
     

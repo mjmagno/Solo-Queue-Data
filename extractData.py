@@ -11,7 +11,7 @@ def getRelevantData(player_data):
     extracted_data = []
     game_time = player_data['timePlayed'] / 60
     extracted_data.append({
-        'Data': pd.to_datetime('today').strftime('%Y-%m-%d'),
+        'Date': pd.to_datetime('today').strftime('%Y-%m-%d'),
         'Champion': player_data['championName'],
         'K': player_data['kills'],
         'D': player_data['deaths'],
@@ -21,6 +21,7 @@ def getRelevantData(player_data):
         'Game Time': game_time
     })
     return pd.DataFrame(extracted_data)
+
 
 player_data = returnPlayerData(0)
 print(getRelevantData(player_data))
