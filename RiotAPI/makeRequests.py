@@ -14,58 +14,77 @@ def request(api_url):
     except Exception as err:
         print(f"Other error occurred: {err}")  # Handle other possible errors
         raise
-# Return relevant puuids in a list 
-def getPUUIDs():
+
+def getRegionURL(region):
+    base_url = ""
+    if region == "NA":
+        base_url = "https://americas.api.riotgames.com"
+    elif region == "KR":
+         base_url = "https://asia.api.riotgames.com"
+    elif region == "EU":
+         base_url = "https://europe.api.riotgames.com"
+    return base_url
+
+# Returns puuid for a riot id in a given region 
+# Valid regions are NA, KR, EU 
+def getPUUID(gameName,tagline,region):
     api_key = getApiKey()
+    region_url = getRegionURL(region)
+    
+    base_url = region_url + "/riot/account/v1/accounts/by-riot-id/"
+  
+    
+    # Incase user adds # to their tagline 
+    if '#' in tagline:
+        tagline = tagline.replace('#', '')
+    
+    # Replace white space with %20 for api request
+    gameName = gameName.replace(' ', '%20')
 
-    base_url = "https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/"
+    id = gameName + '/' + tagline
 
-    # Relevant accounts riot_ids    
-    shamwwow = "Shamwwow/123"
-    khannugurisummit = "KhanNuguriSummit/NA1"
-    satxri = "Satxri/NA1"
-    
-    ids = [shamwwow,khannugurisummit,satxri]
-    
-    puuids = []
-    
-    for id in ids:
-        api_url = base_url + id + "?api_key=" + api_key
+    api_url = base_url + id + "?api_key=" + api_key
       
-        
-        player_data = request(api_url)
+    player_data = request(api_url)
        
-
-        puuids.append(player_data["puuid"])
+    return player_data["puuid"]
         
-    return puuids
 
 # Return most recent match
-def getMatchID(puuid):
+def getMatchID(puuid,region):
     api_key = getApiKey()
-    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/"
+    region_url = getRegionURL(region)
+    
+    base_url = region_url + "/lol/match/v5/matches/by-puuid/"
+    
     request_url = base_url + puuid + "/ids?start=0&count=1&" + "api_key=" + api_key
     match_id = request(request_url)
     return match_id[0]
 
 
-def getMatchIDs(puuid, num_matches):
+def getMatchIDs(puuid, num_matches,region):
     api_key = getApiKey()
-    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/"
+    region_url = getRegionURL(region)
+    
+    base_url = region_url + "/lol/match/v5/matches/by-puuid/"
     request_url = base_url + puuid + "/ids?start=0&count=" + str(num_matches) + "&" + "api_key=" + api_key
     match_ids = request(request_url)
     return match_ids
 
-def getMatchData(matchid):
+def getMatchData(matchid,region):
     api_key = getApiKey()
-    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/"
+    region_url = getRegionURL(region)
+    
+    base_url = region_url + "/lol/match/v5/matches/"
     request_url = base_url + matchid + "?api_key=" + api_key
     match_data = request(request_url)
     return match_data
 
-def getPlayerMatchData(puuid, matchid):
+def getPlayerMatchData(puuid, matchid,region):
     api_key = getApiKey()
-    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/"
+    region_url = getRegionURL(region)
+    
+    base_url = region_url + "/lol/match/v5/matches/"
     request_url = base_url + matchid + "?api_key=" + api_key
     match_data = request(request_url)
     # get player index from match metadata
@@ -73,9 +92,12 @@ def getPlayerMatchData(puuid, matchid):
     part_data =  match_data["info"]["participants"][part_index]
     return part_data
 
-def getMatchTimeline(matchid):
+def getMatchTimeline(matchid,region):
     api_key = getApiKey()
-    base_url = "https://americas.api.riotgames.com/lol/match/v5/matches/"
+    region_url = getRegionURL(region)
+    
+    base_url = region_url + "/lol/match/v5/matches/"
+   
     request_url = base_url + matchid + "/timeline?api_key=" + api_key
     match_data = request(request_url)
     return match_data
