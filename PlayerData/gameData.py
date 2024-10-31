@@ -84,7 +84,7 @@ class gameData:
         for frame in data['info']['frames']:
             # Extract the participant's frame data based on their number
             participant_frame = frame['participantFrames'].get(str(participant_number), {})
-            # TODO frame['events]['timestamp]
+            # TODO frame['events]['timestamp']
             participant_frame['timestamp'] = frame['timestamp']  # Add the timestamp for context
             frames_data.append(participant_frame)
 
